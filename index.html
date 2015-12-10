@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Create a simple twitter share button</title>
+  <style type="text/css">
+  html {
+  background: #f8f8f8;
+  }
+   body {
+     font-family: Arial, Helvetica, sans-serif;
+      max-width: 700px;
+      margin: 0 auto;
+   }
+   a {color: #333;}
+   h1 {
+     color: darkgreen;
+     font-weight: lighter;
+     font-size: 40px;
+   }
+   p {
+     color: #666;
+     font-size: 16px;
+   }
+   .more {
+     text-align: center;
+   }
+   .share {
+     text-align: right;
+   }
+   #twittershare,.share {
+     color: #fff;
+     background: royalblue;
+     text-decoration: none;
+     padding: 5px 10px;
+     opacity: 0;
+     transition: 1s;
+   }
+   input[type=submit] {
+     background: darkgreen;
+     color: #fff;
+     border: none;
+     padding: 5px 10px;
+     display: inline-block;
+     font-size: 20px;
+   }
+   .done #twittershare, .share {
+     opacity: 1;
+   }
+   label {
+     color: darkolivegreen;
+     display: block;
+   }
+   textarea {
+     width: 100%;
+     height: 4em;
+   }
+   input[type=text] {
+     width: 80%;
+   }
+   #code {
+     display: none;
+     border: 2px solid #000;
+     width: 80%;
+     padding: 10px;
+     height: 100px;
+     transition: 1s;
+   }
+   .done #code {
+     display: block;
+   }
+  </style>
+</head>
+<body>
+  <h1>Create a simple Twitter share button</h1>
+  <p>Twitter (for now) has a very simple REST API to create a sharing intent. There is no need to include a massive script into your sites to offer a "share this" button.</p>
+
+  <p>For example, click the following link:</p>
+
+ <p><a target="_blank" class="share" href="https://twitter.com/intent/tweet?text=Create%20a%20simple%20twitter%20share%20button%20%23nojs%20%23simple%20%23link&url=https%3A%2F%2Fcodepo8.github.io%2Fsharebutton"">Tell Twitter about this</a></p>
+
+<p>Here is a form and a simple, vanilla JavaScript to use this API.</p>
+
+  <h2>Create a one-off-button</h2>
+  <p>Enter your information (leave empty what you don't want)</p>
+  <form action="#">
+    <p>
+      <label for="text">Text</label>
+      <textarea type="text" id="text" placeholder="stop using massive libraries"></textarea>
+    </p>
+    <p>
+      <label for="hashtags">Hashtags (comma separated)</label>
+      <input type="text" id="hashtags" placeholder="vanilla,js,reallinks">
+    </p>
+    <p>
+      <label for="link">Link</label>
+      <input type="text" id="link" placeholder="http://vanillawebdiet.com/">
+    </p>
+    <p>
+      <label for="account">Twitter account</label>
+      <input type="text" id="account" placeholder="codepo8">
+    </p>
+    <input type="submit" value="make button">
+    <p>
+      <a target="_blank" id="twittershare"  href="https://twitter.com/intent/tweet">
+      Share on Twitter</a>
+    </p>
+    <textarea id="code"></textarea>
+  </form>
+  <h2>Use sharebutton.js</h2>
+
+<p>This simple script can help you dynamically alter a share button.</p>
+
+<p>1) Make sure you have a link in your HTML, like this:</p>
+<pre>
+&lt;a target="_blank" id="twittershare"
+  href="https://twitter.com/intent/tweet">
+  Share on Twitter
+&lt;/a>
+</pre>
+<p>2) Include sharebutton.js</p>
+<pre>
+  &lt;script src="sharebutton.js">&lt;/script>
+</pre>
+<p>3) Set the configuration</p>
+<pre>
+sharebutton.config.hashtags = 'dogs,beecostumes';
+sharebutton.config.link = 'http://beedogs.com';
+sharebutton.config.account = 'codepo8';
+</pre>
+<p>4) Give the script the DOM selector and the text to set</p>
+<pre>
+  sharebutton.set(
+    '#twittershare',
+    'Best dogs in bee costumes site on the web'
+  );
+</pre>
+<p>You can of course keep the config, and simply re-set the text or have it as a result of a concatenation.</p>
+<script src="sharebutton.js"></script>
+<script>
+var $ = function(elm) {
+  return document.querySelector(elm);
+};
+$('form').addEventListener('submit', function(ev){
+  this.className = 'done';
+  console.log(this)
+  ev.preventDefault();
+  ['hashtags','account','link'].forEach(function(name) {
+    sharebutton.config[name] = $('#' + name).value;
+  });
+  sharebutton.set('#twittershare',$('#text').value);
+  $('#code').innerHTML = '<a target="_blank" href="'+$('#twittershare').href+'">Share on Twitter</a>';
+});
+</script>
+</body>
+</html>
