@@ -8,9 +8,7 @@ sharebutton = function() {
     var url = 'https://twitter.com/intent/tweet';
     url += '?text=' + encodeURIComponent(text);
     if (config.hashtags.length > 0) {
-      var hashtags = config.hashtags.split(',');
-      console.log('x');
-      url += encodeURIComponent(' #' + hashtags.join(' #'));
+      url += '&hashtags=' + config.hashtags;
     }
     if (config.account !== '') {
       url += '&via=' + encodeURIComponent(config.account);
